@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: main            # entspricht deinem SQLite-Schema (oft "main")
+    tables:
+      - name: cycles_raw
+        description: "Raw turbofan engine cycles from ETL (Python)"
+      - name: cycles_features
+        description: "Feature table from ETL"
+      - name: units_summary
+        description: "Aggregated unit statistics"

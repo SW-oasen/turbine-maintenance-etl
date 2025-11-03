@@ -1,0 +1,26 @@
+db_url: sqlite:///db-sqlite/turbofan.db
+
+# Variante A: explizite Liste
+datasets:
+  - code: FD001
+    train: data/raw/train_FD001.txt
+    test:  data/raw/test_FD001.txt      # optional
+    rul:   data/raw/RUL_FD001.txt       # optional
+  - code: FD002
+    train: data/raw/train_FD002.txt
+    test:  data/raw/test_FD002.txt
+    rul:   data/raw/RUL_FD002.txt
+  - code: FD003
+    train: data/raw/train_FD003.txt
+    test:  data/raw/test_FD003.txt
+    rul:   data/raw/RUL_FD003.txt
+  - code: FD004
+    train: data/raw/train_FD004.txt
+    test:  data/raw/test_FD004.txt
+    rul:   data/raw/RUL_FD004.txt
+
+options:
+  checkpoint: true
+  drop_constant_sensors: true
+  rolling_windows: [5, 20]
+  sensors: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21]

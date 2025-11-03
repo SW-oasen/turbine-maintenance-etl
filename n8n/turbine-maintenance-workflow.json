@@ -1,0 +1,226 @@
+{
+  "name": "turbine-maintenance-workflow",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "eea2ff6a-68e8-42af-8477-ce3dadce45ec",
+      "name": "When clicking 'Execute workflow'",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -32,
+        -96
+      ]
+    },
+    {
+      "parameters": {
+        "command": "=cd C:\\Projects\\DataScience\\Portfolio\\Turbine-Maintenance-ETL\\Workspace\\n8n & run_etl-laptop.bat",
+        "cwd": "="
+      },
+      "id": "7ee90d64-df35-40b9-9d9e-b6f389dbb5f0",
+      "name": "Data ETL on host",
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        192,
+        -96
+      ],
+      "credentials": {
+        "sshPassword": {
+          "id": "2NuZ9OiOUY0cKDmn",
+          "name": "windows-host-ssh"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "command": "cd C:\\Projects\\DataScience\\Portfolio\\Turbine-Maintenance-ETL\\Workspace\\n8n & scripts\\ml_pipeline_gpu.py",
+        "cwd": "="
+      },
+      "id": "16b19858-f8e8-4298-b66c-b44a00218639",
+      "name": "Train model on host (CUDA)",
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        416,
+        -96
+      ],
+      "credentials": {
+        "sshPassword": {
+          "id": "2NuZ9OiOUY0cKDmn",
+          "name": "windows-host-ssh"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "command": "powershell -NoProfile -Command \"$env:PROJECT_DIR='C:\\Projects\\DataScience\\Portfolio\\Turbine-Maintenance-ETL\\Workspace'; $env:PYTHON_EXE='C:\\Users\\seewi\\AppData\\Local\\Programs\\Python\\Python313\\python.exe'; & $env:PYTHON_EXE \\\"$env:PROJECT_DIR\\ops\\powerbi_refresh.py\\\" --tenant-id 'TODO_TENANT' --client-id 'TODO_CLIENT' --client-secret 'TODO_SECRET' --workspace-id 'TODO_WS' --dataset-id 'TODO_DS'\""
+      },
+      "id": "2d80ea59-0034-49e3-896c-712588bf75f8",
+      "name": "Power BI refresh (placeholder)",
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        192,
+        128
+      ],
+      "credentials": {
+        "sshPassword": {
+          "id": "2NuZ9OiOUY0cKDmn",
+          "name": "windows-host-ssh"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "turbine-progress",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -32,
+        352
+      ],
+      "id": "c3570b88-7201-46b9-879b-dc93df779c0d",
+      "name": "Webhook",
+      "webhookId": "ddd7e55b-e211-4da1-9192-d3ed064d0ed3"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        192,
+        352
+      ],
+      "id": "7395d33d-023d-4d1e-995a-3b72d202b8cf",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "command": "cd C:\\Projects\\DataScience\\Portfolio\\Turbine-Maintenance-ETL\\Workspace\\n8n & run_test-laptop.bat",
+        "cwd": "="
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        -32,
+        -320
+      ],
+      "id": "a5181ce0-b659-45ba-adf4-9bde99d0c62b",
+      "name": "test ssh cmd",
+      "credentials": {
+        "sshPassword": {
+          "id": "2NuZ9OiOUY0cKDmn",
+          "name": "windows-host-ssh"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "command": " cd C:\\Projects\\DataScience\\Portfolio\\Turbine-Maintenance-ETL\\Workspace & n8n\\run_dbt-laptop.bat",
+        "cwd": "="
+      },
+      "id": "f177cefa-8f49-4d11-b6d9-d7d2ef294734",
+      "name": "dbt on host",
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        592,
+        -96
+      ],
+      "credentials": {
+        "sshPassword": {
+          "id": "2NuZ9OiOUY0cKDmn",
+          "name": "windows-host-ssh"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking 'Execute workflow'": {
+      "main": [
+        [
+          {
+            "node": "Data ETL on host",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Train model on host (CUDA)": {
+      "main": [
+        [
+          {
+            "node": "dbt on host",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Data ETL on host": {
+      "main": [
+        [
+          {
+            "node": "Train model on host (CUDA)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "dbt on host": {
+      "main": [
+        [
+          {
+            "node": "Power BI refresh (placeholder)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "saveExecutionProgress": true
+  },
+  "versionId": "f3dfdbbf-030d-4e19-97f4-6f3122743a34",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "fdd052c242f1d444067a2351ef7268d554e08c30371a13fe765122ededb82790"
+  },
+  "id": "A164Jg1u22qK2Clf",
+  "tags": [
+    {
+      "createdAt": "2025-10-30T14:22:28.362Z",
+      "updatedAt": "2025-10-30T14:22:28.362Z",
+      "id": "Cl81stOCL7WO5drD",
+      "name": "turbine-maintenance"
+    },
+    {
+      "createdAt": "2025-10-30T14:22:28.376Z",
+      "updatedAt": "2025-10-30T14:22:28.376Z",
+      "id": "M2q9258gP557Lixa",
+      "name": "phase4"
+    }
+  ]
+}

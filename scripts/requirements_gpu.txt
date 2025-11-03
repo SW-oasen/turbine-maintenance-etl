@@ -1,0 +1,49 @@
+# Core Data Science Libraries
+pandas
+numpy
+scikit-learn
+matplotlib
+seaborn
+pyyaml
+sqlalchemy
+
+# Database
+sqlite3-binary
+
+# GPU-Accelerated ML Libraries
+# XGBoost with GPU support
+xgboost[gpu]
+
+# PyTorch with CUDA support (for neural networks and GPU tensors)
+# Install with: pip install torch torchvision --index-url https://download.pytorch.org/whl/cu126
+torch==2.9.0+cu126
+torchvision==0.24.0+cu126
+
+# CuPy (NumPy-like library for GPU)
+cupy-cuda12x
+
+# RAPIDS cuML (GPU-accelerated scikit-learn equivalent)
+# Note: Install via conda for best compatibility
+# cuml-cu12
+# cudf-cu12
+
+# Alternative: LightGBM with GPU support
+lightgbm
+
+# TensorFlow with GPU support (if needed for deep learning)
+# tensorflow[and-cuda]
+
+# Additional GPU utilities
+numba  # JIT compiler with GPU support
+
+# For memory monitoring and GPU utils
+psutil
+gpustat
+
+# Jupyter notebook support (if needed)
+jupyter
+ipykernel
+
+# streamlit dashboarding
+streamlit
+plotly

@@ -1,0 +1,20 @@
+# python 3.13 path
+C:\Users\seewi\AppData\Local\Programs\Python\Python313\python.exe
+
+# project-dir
+cd "C:\Projects\DataScience\Portfolio\Turbine-Maintenance-ETL\Workspace\"
+
+# 1) ETL
+python scripts/etl_turbofan.py --config etl_config.yaml
+
+# 2) dbt 
+dbt run --profiles-dir . --project-dir ./turbine_etl_dbt
+
+# 3) ML-Training (CUDA compatible if available)
+python scripts/ml_pipeline_gpu.py
+
+# 4) Batch-Scoring
+# python ml/score.py --model latest --output results/predictions/preds.parquet
+
+# 5) Power BI Refresh (per Python-Skript, siehe unten)
+python scripts/powerbi_refresh.py --workspace-id ... --dataset-id ...

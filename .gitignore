@@ -1,0 +1,112 @@
+# Database files (large size)
+db-sqlite/turbofan.db
+*.db
+*.sqlite
+*.sqlite3
+
+# dbt artifacts
+target/
+dbt_packages/
+logs/
+.user.yml
+profiles.yml
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+scratches/obsolete/
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+
+
+# IPython
+profile_default/
+ipython_config.py
+
+# Machine Learning Models
+*.pkl
+*.joblib
+*.h5
+*.hdf5
+*.pb
+*.onnx
+results/ml_models/*.pth
+results/ml_models/*.pt
+
+# Logs and temporary files
+logs/
+*.log
+*.tmp
+*.temp
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# test
+test/
+
+# Data files (optional - uncomment if you want to exclude data)
+# data/raw/
+# data/interim/
+# data/processed/
+
+# Large processed files
+notebooks/data/processed/cycles_features.csv
+data/processed/cycles_features.csv
+notebooks/data/interim/cycles_raw.csv
+data/interim/cycles_raw.csv
+
+# Any large CSV files in notebooks directory
+notebooks/data/**/*.csv
+
+# Power BI refresh py not usable
+scripts/obsolete/*
+
+# Configuration files with secrets (uncomment if needed)
+# *.env
+# config/secrets.yaml
+# .secrets

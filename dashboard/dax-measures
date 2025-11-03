@@ -1,0 +1,73 @@
+-- Basis
+Units =
+DISTINCTCOUNT ( fct_cycles_features[unit_nr] )
+
+Total Rows =
+COUNTROWS ( fct_cycles_features )
+
+Max Cycles (overall) =
+MAX ( fct_cycles_features[time_cycles] )
+
+Average RUL =
+AVERAGE ( fct_cycles_features[rul] )
+
+-- Max cycles pro Unit → dann über alle Units mitteln
+Avg Max Cycles per Unit =
+AVERAGEX (
+    SUMMARIZE (
+        fct_cycles_features,
+        fct_cycles_features[dataset],
+        fct_cycles_features[unit_nr],
+        "mx", MAX ( fct_cycles_features[time_cycles] )
+    ),
+    [mx]
+)
+
+-- Anteil kritischer Zustände (RUL < 30)
+Critical % (<30 RUL) =
+VAR totalRows = [Total Rows]
+VAR critRows  =
+    CALCULATE ( COUNTROWS ( fct_cycles_features ),
+        fct_cycles_features[rul] < 30
+    )
+RETURN DIVIDE ( critRows, totalRows )
+
+-- RUL Buckets
+RUL Bucket =
+VAR r = SELECTEDVALUE ( fct_cycles_features[rul] )
+RETURN
+SWITCH (
+    TRUE(),
+    ISBLANK(r), "Unknown",
+    r < 30,      "< 30",
+    r < 60,      "30–59",
+    r < 120,     "60–119",
+                 "≥ 120"
+)
+
+--
+Avg Sensor2 =
+AVERAGE ( fct_cycles_features[sensor2] )
+
+StdDev Sensor2 =
+STDEV.P ( fct_cycles_features[sensor2] )
+
+Mean20 Sensor2 =
+AVERAGE ( fct_cycles_features[mean20_sensor2] )
+
+Delta Sensor2 (avg) =
+AVERAGE ( fct_cycles_features[d_sensor2] )
+
+-- 
+Avg RUL by Dataset =
+AVERAGEX (
+    SUMMARIZE ( fct_cycles_features, fct_cycles_features[dataset] ),
+    CALCULATE ( AVERAGE ( fct_cycles_features[rul] ) )
+)
+
+Selected Dataset Avg RUL =
+CALCULATE ( [Average RUL], ALLEXCEPT ( fct_cycles_features, fct_cycles_features[dataset] ) )
+
+All Datasets Avg RUL =
+CALCULATE ( [Average RUL], ALL ( fct_cycles_features[dataset] ) )
+

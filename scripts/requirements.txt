@@ -1,0 +1,6 @@
+pandas
+numpy
+scikit-learn
+xgboost
+sqlite3-binary
+matplotlib
